@@ -17,8 +17,8 @@ import os
 # 初始化
 audiofile = "C:\\Users\\Administrator\\Desktop\\test2\\"
 for i in range(100,105,1):
-    audioname=i
-    audiopath=audiofile+i+'.mp3'
+    audioname=str(i)
+    audiopath=audiofile+audioname+'.mp3'
 
     audiotype = 'mp3' #如果wav、mp4其他格式参看pydub.AudioSegment的API
 # 读入音频
@@ -38,7 +38,7 @@ for i in range(100,105,1):
         new = chunks[i]
         save_name = chunks_path+audioname+'%04d.%s'%(i,audiotype)
         new.export(save_name, format=audiotype)
-        print('%04d'%i,len(new))
+        print(save_name)
 print('保存完毕')
 
 
