@@ -30,7 +30,7 @@ for i in range(100,105,1):
     chunks = split_on_silence(sound,min_silence_len=520,silence_thresh=-30,keep_silence=800)#min_silence_len: 拆分语句时，静默满0.3秒则拆分。silence_thresh：小于-70dBFS以下的为静默。
 # 创建保存目录
     filepath = os.path.split(audiopath)[0]
-    chunks_path = filepath+'chunks/'
+    chunks_path = filepath+'\\chunks\\'
     if not os.path.exists(chunks_path):os.mkdir(chunks_path)
 # 保存所有分段
     print('开始保存')
@@ -38,7 +38,7 @@ for i in range(100,105,1):
         new = chunks[i]
         save_name = chunks_path+audioname+'%04d.%s'%(i,audiotype)
         new.export(save_name, format=audiotype)
-        print(save_name)
+        
 print('保存完毕')
 
 
