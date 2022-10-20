@@ -1,0 +1,4 @@
+audiofile='\\'
+for i in os.listdir(audiofile):
+    audioname=os.splitext(i)[0]
+    audiopath=audiofile+audiofile+'.mp3'
