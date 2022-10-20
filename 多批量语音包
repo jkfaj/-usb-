@@ -16,7 +16,7 @@ import os
 
 # 初始化
 audiofile = "C:\\Users\\Administrator\\Desktop\\test2\\"
-for i in range(100,106,1):
+for i in range(100,105,1):
     audioname=i
     audiopath=audiofile+i+'.mp3'
 
