@@ -3,11 +3,10 @@ from pydub.silence import split_on_silence
 import os
 
 audiofile='C:\\Users\\Administrator\\Desktop\\test\\'
-for i in os.listdir(audiofile):
-    audioname=os.splitext(i)[0]
-    audiopath=audiofile+audiofile+'.mp3'
 
-
+for audioname in range(100,106,1):
+    
+    audiopath=audiofile+audioname+'.mp3'
 
 
 # 初始化
