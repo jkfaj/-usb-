@@ -24,9 +24,11 @@ audiofile = "C:\\Users\\Administrator\\Desktop\\test2\\"
 onum=0
 upnum=100
 for i in os.listdir(audiofile):
-    if i.split('.')[1]=='.mp3':
+    if  os.path.splitext(i)[-1]=='.mp3':
+        print(  os.path.splitext(i)[-1] )
         onum+=1
-        onewname=audiofile+upname+'.mp3'
+        onewname=audiofile+upnum+'.mp3'
+        print(onewname)
         os.rename(audiofile+i,onewname)
         upnum+=1
 for i in range(100,100+onum,1):
