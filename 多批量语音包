@@ -264,7 +264,7 @@ no_logo=['*',':','\'','<','>','|','\\','/','?']
 
 for i in no_logo:
     data3 =data3.apply(lambda x:x.replace( i,''))
-    data3=data3.apply(lambda x:x[:253] if len(x)>254 else x)
+    data3=data3.apply(lambda x:x[:80] if len(x)>81 else x)
 data3=data3.dropna(axis=0,how='any')
 data3.drop(data3[data3.values==''].index,inplace=True)
 data3.drop_duplicates(keep='first',inplace=True)
