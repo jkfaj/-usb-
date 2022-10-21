@@ -27,7 +27,7 @@ for i in os.listdir(audiofile):
     if  os.path.splitext(i)[-1]=='.mp3':
         print(  os.path.splitext(i)[-1] )
         onum+=1
-        onewname=audiofile+upnum+'.mp3'
+        onewname=audiofile+str(upnum)+'.mp3'
         print(onewname)
         os.rename(audiofile+i,onewname)
         upnum+=1
