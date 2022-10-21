@@ -34,6 +34,7 @@ for i in os.listdir(audiofile):
 for i in range(100,100+onum,1):
     audioname=str(i)
     audiopath=audiofile+audioname+'.mp3'
+    print(audiopath)
     audiotype = 'mp3' #如果wav、mp4其他格式参看pydub.AudioSegment的API
 # 读入音频
     print('读入音频')
@@ -45,7 +46,7 @@ for i in range(100,100+onum,1):
 # 创建保存目录
     filepath = os.path.split(audiopath)[0]
     chunks_path = filepath+'\\chunks\\'
-    print(chunks_path)
+   # print(chunks_path)
     if not os.path.exists(chunks_path):os.mkdir(chunks_path)
 # 保存所有分段
     print('开始保存')
