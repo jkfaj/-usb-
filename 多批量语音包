@@ -16,7 +16,20 @@ import os
 
 # 初始化
 audiofile = "C:\\Users\\Administrator\\Desktop\\test2\\"
-for i in range(100,105,1):
+
+onum=0
+upnum=100
+for i in os.listdir(audiofile):
+    if i.split('.')[1]=='.mp3':
+        onum+=1
+        onewname=audiofile+upname+'.mp3'
+        os.rename(audiofile+i,onewname)
+        upnum+=1
+        
+        
+
+
+for i in range(100,100+onum,1):
     audioname=str(i)
     audiopath=audiofile+audioname+'.mp3'
 
