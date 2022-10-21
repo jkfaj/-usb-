@@ -1,3 +1,6 @@
+
+#第一部分代码  
+#功能：将chunks文件夹下以及转wav文件夹下清除
 import os
 import glob
 for file in glob.glob("C:\\Users\\Administrator\\Desktop\\test2\\chunks\\*"):
@@ -10,13 +13,14 @@ print('***进入切分程序***')
 
 
 
+
+#第二部分代码
+#功能：开始切分语音，并保存到chunks文件夹下
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 import os
-
 # 初始化
 audiofile = "C:\\Users\\Administrator\\Desktop\\test2\\"
-
 onum=0
 upnum=100
 for i in os.listdir(audiofile):
@@ -25,14 +29,9 @@ for i in os.listdir(audiofile):
         onewname=audiofile+upname+'.mp3'
         os.rename(audiofile+i,onewname)
         upnum+=1
-        
-        
-
-
 for i in range(100,100+onum,1):
     audioname=str(i)
     audiopath=audiofile+audioname+'.mp3'
-
     audiotype = 'mp3' #如果wav、mp4其他格式参看pydub.AudioSegment的API
 # 读入音频
     print('读入音频')
@@ -44,6 +43,7 @@ for i in range(100,100+onum,1):
 # 创建保存目录
     filepath = os.path.split(audiopath)[0]
     chunks_path = filepath+'\\chunks\\'
+    print(chunks_path)
     if not os.path.exists(chunks_path):os.mkdir(chunks_path)
 # 保存所有分段
     print('开始保存')
@@ -51,18 +51,13 @@ for i in range(100,100+onum,1):
         new = chunks[i]
         save_name = chunks_path+audioname+'%04d.%s'%(i,audiotype)
         new.export(save_name, format=audiotype)
-        
 print('保存完毕')
 
 
 
 
-
-
-
-
-
-
+#第三部分代码
+#功能：将已经切分好的语音转换为阿里云平台可识别的指定格式
 import os
 to_trans_file="C:\\Users\\Administrator\\Desktop\\test2\\chunks\\"
 to_save_trans="C:\\Users\\Administrator\\Desktop\\test2\\转wav\\"
@@ -77,14 +72,13 @@ print('pcm格式转换完成')
 
 
 
-
-
-import pandas as pd
-
+#第四部分代码
+#功能：上传阿里云平台识别并返回识别结果
 # -*- coding: UTF-8 -*-
 # Python 2.x引入httplib模块
 # import httplib
 # Python 3.x引入http.client模块
+import pandas as pd
 import http.client
 from datetime import datetime
 import json
@@ -110,13 +104,10 @@ def process(request, token, audioFile) :
 
     # Python 3.x使用http.client
     conn = http.client.HTTPConnection(host)
-
     conn.request(method='POST', url=request, body=audioContent, headers=httpHeaders)
-
     response = conn.getresponse()
     print('Response status and response reason:')
     print(response.status ,response.reason)
-
     body = response.read()
     try:
         print('Recognize response is:')
@@ -258,11 +249,11 @@ trans_txt=now_time+'.txt'
 log_file="C:\\Users\\Administrator\\Desktop\\test2\\日志\\"+trans_txt
 data2.to_csv(log_file,index=False,sep=' ')
 
-    
-    
-    
-    
-    
+
+
+
+#第五部分代码
+#功能：重命名代码，将阿里云返回识别结果重新命名文件        
 import pandas as pd
 import numpy as py
 import os
@@ -277,18 +268,15 @@ for i in no_logo:
 data3=data3.dropna(axis=0,how='any')
 data3.drop(data3[data3.values==''].index,inplace=True)
 data3.drop_duplicates(keep='first',inplace=True)
-
-
-
-
 for i in os.listdir(rename_file):
     for j in data3.index:
         jstr=str(j)
         jj=jstr.zfill(6)
 
-
         if os.path.splitext(i)[0]==jj:
             old_file=rename_file+i
+#好兄弟加后缀的话放在这里，下面带#的代码就是例子，比这来
+#new_file=rename_file+data3[j]+'（素材分享群：123593137，获取更多素材）.mp3'
             new_file=rename_file+data3[j]+'.mp3'
             os.rename(old_file,new_file)
 print('重命名完成')
@@ -303,6 +291,5 @@ for i in os.listdir(rename_file):
         if os.path.exists(rename_file+jj+'.mp3'):
 
             os.remove(rename_file+jj+'.mp3')
-
 
 print('空白语音跟重复语音已删除')
