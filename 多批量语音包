@@ -12,12 +12,13 @@ urldata=pd.read_csv('C:\\Users\\Administrator\\Desktop\\下载链接.txt',header
 #批量下载视频
 time1=datetime.now()
 print(urldata)
+print('一共',len(urldata),'个视频下载')
 for i in range(0,len(urldata),1):
     time3=datetime.now()
-    print('一共',len(urldata),'个视频下载')
+    
     print('正在下载第',i+1,'个视频')
     url=urldata.values[i]
-    downloadfile='C:\\Users\\Administrator\\Desktop\\test2\\'
+    downloadfile='C:\\Users\\Administrator\\Desktop\\test2'
     os.system('you-get -o '+downloadfile+' '+str(url))
     time4=datetime.now()
     print('第',i+1,'个视频下载完成,耗时',time4-time3,'秒')
