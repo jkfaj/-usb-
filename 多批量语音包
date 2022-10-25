@@ -1,6 +1,6 @@
 
 #第一部分代码  
-#功能：将chunks文件夹下以及转wav文件夹下清除
+#功能：将chunks文件夹下以及转wav文件夹以及test2下mp3跟压缩包下清除
 import os
 import glob
 for file in glob.glob("C:\\Users\\Administrator\\Desktop\\test2\\chunks\\*"):
@@ -298,3 +298,41 @@ for i in os.listdir(rename_file):
             os.remove(rename_file+jj+'.mp3')
 
 print('空白语音跟重复语音已删除')
+
+
+
+
+#第七部分代码
+#功能：自动压缩成文件
+import os
+import zipfile
+ 
+def zipDir(source_dir, output_filename):
+    """
+    压缩指定文件夹
+    :param source_dir: 目标文件夹路径
+    :param output_filename: 压缩文件保存路径+xxxx.zip
+    :return: 无
+    """
+    if os.path.exists(source_dir):
+        # compression压缩比例，默认是不压缩，ZIP_LZMA=14级别的压缩，影响的是时间，但是包能更小
+        # vue使用级别=9的，var archive = archiver('zip', {zlib: {level: 9}});
+        # mac install: brew install xz
+        # mode 解压是 r , 压缩是 w 追加压缩是 a
+        # compression 为  zipfile.ZIP_DEFLATED，zipfile.ZIP_STORED， zipfile.ZIP_LZMA
+        zipf = zipfile.ZipFile(file=output_filename, mode='w', compression=zipfile.ZIP_LZMA)
+        # zipf = zipfile.ZipFile(file=output_filename, mode='w', compression=zipfile.ZIP_DEFLATED)
+        pre_len = len(os.path.dirname(source_dir))
+        for parent, dirnames, filenames in os.walk(source_dir):
+            for filename in filenames:
+                pathfile = os.path.join(parent, filename)
+                arcname = pathfile[pre_len:].strip(os.path.sep)  # 相对路径
+                zipf.write(pathfile, arcname)
+        zipf.close()
+        return output_filename
+    return
+ 
+ 
+zipDir(
+    r'C:\\Users\\Administrator\\Desktop\\test2\\chunks',
+    r'C:\\Users\\Administrator\\Desktop\\test2\\请命名.zip')
