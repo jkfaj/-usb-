@@ -12,7 +12,7 @@ print('———转wav目录下文件删除完成———')
 test2path='C:\\Users\\Administrator\\Desktop\\test2\\'
 for i in os.listdir(test2path):
     if  os.path.splitext(i)[-1]=='.mp3' or os.path.splitext(i)[-1]=='.zip':
-        os.remove(testapath+i)
+        os.remove(test2path+i)
 print('———test2目录下mp3zip删除完成———')
 print('***进入下载程序***')
 
