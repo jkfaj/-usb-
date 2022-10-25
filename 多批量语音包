@@ -1,5 +1,43 @@
 
-#第一部分代码  
+
+
+#第一部分代码
+#功能：批量下载视频并自动提取mp3到test2文件夹下
+import os
+import pandas as pd
+from datetime import datetime
+import subprocess
+
+urldata=pd.read_csv('C:\\Users\\Administrator\\Desktop\\下载链接.txt',header=None)
+#批量下载视频
+time1=datetime.now()
+for i in range(0,len(urldata),1):
+    time3=datetime.now()
+    print('一共',len(urldata),'个视频下载')
+    print('正在下载第',i+1,'个视频')
+    url=urldata[i]
+    downloadfile='C:\\Users\\Administrator\\Desktop\\test2\\'
+    os.system('you-get -o '+downloadfile+' '+str(url))
+    time4=datetime.now()
+    print('第',i+1,'个视频下载完成,耗时',time4-time3,'秒')
+time2=datetime.now()
+print('总耗时',time2-time1)
+
+#批量转换格式转换为mp3并删除mp4
+for i in os.listdir(downloadfile):
+    if  os.path.splitext(i)[-1]=='.mp4':
+        trans_name=downloadfile+i
+        save_name=downladfile+os.path.splitext(i)[0]+'.mp3'
+        code='ffmpeg -y -i ' +trans_name+' -f mp3 '+save_name
+        subprocess.check_output(code,shell=True)
+        os.remove(trans_name)
+print('视频全部提取mp3')
+   
+
+
+
+
+#第二部分代码  
 #功能：将chunks文件夹下以及转wav文件夹以及test2下mp3跟压缩包下清除
 import os
 import glob
@@ -19,7 +57,7 @@ print('***进入切分程序***')
 
 
 
-#第二部分代码
+#第三部分代码
 #功能：开始切分语音，并保存到chunks文件夹下
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
@@ -66,7 +104,7 @@ print('保存完毕')
 
 
 
-#第三部分代码
+#第四部分代码
 #功能：将已经切分好的语音转换为阿里云平台可识别的指定格式
 import os
 to_trans_file="C:\\Users\\Administrator\\Desktop\\test2\\chunks\\"
@@ -82,7 +120,7 @@ print('pcm格式转换完成')
 
 
 
-#第四部分代码
+#第五部分代码
 #功能：上传阿里云平台识别并返回识别结果
 # -*- coding: UTF-8 -*-
 # Python 2.x引入httplib模块
@@ -262,7 +300,7 @@ data2.to_csv(log_file,index=False,sep=' ')
 
 
 
-#第五部分代码
+#第六部分代码
 #功能：重命名代码，将阿里云返回识别结果重新命名文件        
 import pandas as pd
 import numpy as py
