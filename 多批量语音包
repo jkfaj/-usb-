@@ -23,61 +23,97 @@ print('***进入下载程序***')
 
 #第二部分代码
 #功能：批量下载视频并自动提取mp3到test2文件夹下
+import you_get
+import threading
 import os
+import time
 import pandas as pd
-from datetime import datetime
 import subprocess
 
-urldata=pd.read_csv('C:\\Users\\Administrator\\Desktop\\下载链接.txt',header=None,sep='\t')
-#批量下载视频
-time1=datetime.now()
-print(urldata)
-print('一共',len(urldata),'个视频下载')
-for i in range(0,len(urldata),1):
-    time3=datetime.now()
-    
-    print('正在下载第',i+1,'个视频')
-    url=urldata.values[i]
-    downloadfile='C:\\Users\\Administrator\\Desktop\\test2'
-    os.system('you-get -o '+downloadfile+' '+str(url))
-    time4=datetime.now()
-    print('第',i+1,'个视频下载完成,耗时',time4-time3,'秒')
-time2=datetime.now()
-print('总耗时',time2-time1)
+def download1080(count,url,downloadfile):
+    print("thread "+ str(count) +" is running")
+    os.system("you-get -o "+downloadfile+" --format=dash-flv "+url)
 
-#批量转换格式转换为mp3并删除mp4
-for i in os.listdir(downloadfile):
-    if  os.path.splitext(i)[-1]=='.mp4':
-        trans_name=downloadfile+i
-        save_name=downladfile+os.path.splitext(i)[0]+'.mp3'
-        code='ffmpeg -y -i ' +trans_name+' -f mp3 '+save_name
-        subprocess.check_output(code,shell=True)
-        os.remove(trans_name)
-print('视频全部提取mp3')
+def download720(count,url,downloadfile):
+    print("thread "+ str(count) +" is running")
+    os.system("you-get -o "+downloadfile+"  --format=dash-flv720 "+url)
+
+
+def download360(count,url,downloadfile):
+    print("thread "+ str(count) +" is running")
+    os.system("you-get -o "+downloadfile+" --format=dash-flv360 "+url)
+
+def downloaddefault(count,url,downloadfile):
+    print("thread "+ str(count) +" is running")
+    os.system("you-get -o "+downloadfile+"  "+url)
+
+def showinfo(count,url):
+    print("thread "+ str(count) +" is running")
+    os.system("you-get -i "+url)
+
+def test(arg):
+    print("thread "+ str(arg) +" is running")
+    os.system("ping www.baidu.com")
+    print("thread "+ str(arg) +" finish")
+
+def extract_mp3(downloadfile):
+    #批量删除弹幕文件
+
+    for f in os.listdir(downloadfile):
+        if f.endswith(u'.xml'):
+            os.remove(downloadfile+f)
+    #批量转换格式转换为mp3并删除mp4
+    for i in os.listdir(downloadfile):
+        if  os.path.splitext(i)[-1]=='.mp4':
+            trans_name=downloadfile+i
+            save_name=downladfile+os.path.splitext(i)[0]+'.mp3'
+            code='ffmpeg -y -i ' +trans_name+' -f mp3 '+save_name
+            subprocess.check_output(code,shell=True)
+            os.remove(trans_name)
+    print('视频全部提取mp3')
    
 
 
 
+downloadfile='C:\\Users\\Administrator\\Desktop\\test2\\'
+dataurl=pd.read_csv('C:\\Users\\Administrator\\Desktop\\下载链接.txt',header=None,sep='\t'
+thread_list = []
+    
+thread_num = 8
 
-#第二部分代码  
-#功能：将chunks文件夹下以及转wav文件夹以及test2下mp3跟压缩包下清除
-import os
-import glob
-for file in glob.glob("C:\\Users\\Administrator\\Desktop\\test2\\chunks\\*"):
-    os.remove(file)
-print('———chunks目录下文件删除完成———')
-for file in glob.glob("C:\\Users\\Administrator\\Desktop\\test2\\转wav\\*"):
-    os.remove(file)
-print('———转wav目录下文件删除完成———')
-test2path='C:\\Users\\Administrator\\Desktop\\test2\\'
-for i in os.listdir(test2path):
-    if  os.path.splitext(i)[-1]=='.mp3' or os.path.splitext(i)[-1]=='.zip':
-    os.remove(testapath+i)
-print('———test2目录下mp3zip删除完成———')
+for i in range(1,len(dataurl)+1):
+        #为每个新URL创建下载线程
+    url = dataurl[i-1]
+    try:
+        t = threading.Thread(target=download360, args=(i,url,downloadfile))
+            #先下载360分辨率
+        thread_list.append(t)
+        t.start()
+    except:
+        t = threading.Thread(target=download720, args=(i,url,downloadfile))
+            #没有360分辨率下载720
+        thread_list.append(t)
+        t.start()
+    except:
+        t = threading.Thread(target=downloaddefault, args=(i,url,downloadfile))
+            # 没有720分辨率下载最高画质
+        thread_list.append(t)
+        t.start()
+
+        #print(thread_list[0])
+
+        #当线程池满时，等待线程结束
+    while len(thread_list)>thread_num:  
+            #移除已结束线程
+        thread_list = [x for x in thread_list if x.is_alive()]
+        time.sleep(3)
+           # print("running threads_________" + str(thread_list))
+   
+extract_mp3(downloadfile)
 print('***进入切分程序***')
 
 
-
+   
 
 #第三部分代码
 #功能：开始切分语音，并保存到chunks文件夹下
@@ -262,7 +298,7 @@ if __name__ == "__main__":
     access_key_id = 'LTAI5tDCdQARDVh2XYMjJGLa'
     access_key_secret = 'znwuFhoqj6i9ojEwZWuPE4Hmp8anzs'
     token, expire_time = AccessToken.create_token(access_key_id, access_key_secret)
-    print('token: %s, expire time(s): %s' % (token, expire_time))
+   # print('token: %s, expire time(s): %s' % (token, expire_time))
     if expire_time:
         print('token有效期的北京时间：%s' % (time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(expire_time))))
 
@@ -401,3 +437,9 @@ def zipDir(source_dir, output_filename):
 zipDir(
     r'C:\\Users\\Administrator\\Desktop\\test2\\chunks',
     r'C:\\Users\\Administrator\\Desktop\\test2\\请命名.zip')
+
+
+
+
+#第八部分代码
+#功能统计各个部分的运行时间，方便后面优化
