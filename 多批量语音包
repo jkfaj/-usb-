@@ -3,7 +3,9 @@
 #功能：将chunks文件夹下以及转wav文件夹以及test2下mp3跟压缩包下清除
 from datetime import datetime
 import os
-import glob
+import glob 
+
+timetotal1=datetime.now()
 
 time_1=datetime.now()
 for file in glob.glob("C:\\Users\\Administrator\\Desktop\\test2\\chunks\\*"):
@@ -58,7 +60,7 @@ def showinfo(count,url):
     os.system("you-get -i "+url)
 
 def test(arg):
-    #print("thread "+ str(arg) +" is running")
+    #print("thread "+ str(arg) +" s running")
     os.system("ping www.baidu.com")
     #print("thread "+ str(arg) +" finish")
 
@@ -228,18 +230,18 @@ def process(request, token, audioFile) :
     conn = http.client.HTTPConnection(host)
     conn.request(method='POST', url=request, body=audioContent, headers=httpHeaders)
     response = conn.getresponse()
-    print('Response status and response reason:')
-    print(response.status ,response.reason)
+    # print('Response status and response reason:')
+    # print(response.status ,response.reason)
     body = response.read()
     try:
-        print('Recognize response is:')
+        # print('Recognize response is:')
         body = json.loads(body)
-        print(body)
+        # print(body)
 
         status = body['status']
         if status == 20000000 :
             result = body['result']
-#            print('Recognize result: ' + result)
+#           # print('Recognize result: ' + result)
             return result
         else :
             print('Recognizer failed!')
@@ -359,7 +361,7 @@ for i in os.listdir(trans_wav):
     xunfei_wav=trans_wav+'\\'+i
     audioFile = xunfei_wav
     result= process(request, token, audioFile)
-    print(num,result)
+    # print(num,result)
     dic ={'编号':num,'语音内容':result}
     data1=pd.DataFrame(dic,index=[0])
     data2=data2.append(data1,ignore_index=True)
@@ -463,6 +465,7 @@ zipDir(
 print('***运行时间统计代码***')
 
 time_14=datetime.now()
+timetotal2=datetime.now()
 
 
 
@@ -470,4 +473,7 @@ time_14=datetime.now()
 #第八部分代码
 #功能统计各个部分的运行时间，方便后面优化，降序排序
 import pandas as pd
+data_time=pd.DataFrame(data=None,columns=['运行时间','占比'])
+time_total=timetotal2-timetotal1
+print('代码运行总时间',time_total)
 
