@@ -373,7 +373,7 @@ trans_txt=now_time+'.txt'
 log_file="C:\\Users\\Administrator\\Desktop\\test2\\日志\\"+trans_txt
 data2.to_csv(log_file,index=False,sep=' ')
 print('***运行重命名代码***')
-time10=datetime.now()
+time_10=datetime.now()
 
 
 
@@ -476,4 +476,13 @@ import pandas as pd
 data_time=pd.DataFrame(data=None,columns=['运行时间','占比'])
 time_total=timetotal2-timetotal1
 print('代码运行总时间',time_total)
+
+parttime=[time_2-time_1,time_4-time_3,time_6-time_5,time_8-time_7,time_10-time_9,time_12-time_11,time_14-time_13]
+zhanbi=['%.2f%%' % (x/time_total * 100) for x in parttime]
+
+
+datatime={'运行时间':parttime'时间占比':zhanbi}
+data_time=pd.DataFrame(datatime,columns=['运行时间','时间占比'],index=['第一部分代码','第二部分代码','第三部分代码','第四部分代码','第五部分代码','第六部分代码','第七部分代码'])
+data_time=data_time.sort_values(by='运行时间',ascending=False,axis=0)
+data_time
 
