@@ -14,11 +14,7 @@ for file in glob.glob("C:\\Users\\Administrator\\Desktop\\test2\\chunks\\*"):
 for file in glob.glob("C:\\Users\\Administrator\\Desktop\\test2\\转wav\\*"):
     os.remove(file)
 # print('———转wav目录下文件删除完成———')
-test2path='C:\\Users\\Administrator\\Desktop\\test2\\'
-for i in os.listdir(test2path):
-    if  os.path.splitext(i)[-1]=='.mp3' or os.path.splitext(i)[-1]=='.zip':
-        os.remove(test2path+i)
-# print('———test2目录下mp3zip删除完成———')
+
 print('***运行下载代码***')
 time_2=datetime.now()
 
@@ -184,6 +180,7 @@ def process(request, token, audioFile) :
 # -*- coding: utf-8 -*-
 import base64
 import hashlib
+import pandas as pd
 import hmac
 import requests
 import time
@@ -282,7 +279,7 @@ if enableVoiceDetection :
 
 data2=pd.DataFrame(data=None,columns=['编号','语音内容'])
 
-trans_wav="C:\\Users\\Administrator\\Desktop\\test2\\转wav"
+trans_wav="C:\\Users\\Administrator\\Desktop\\test\\转wav"
     # 测试时候在此处正确填写相关信息即可运行
 time1 = datetime.now()
 for i in os.listdir(trans_wav):
@@ -390,10 +387,6 @@ def zipDir(source_dir, output_filename):
     return
  
  
-zipDir(
-    r'C:\\Users\\Administrator\\Desktop\\test2\\chunks',
-    r'C:\\Users\\Administrator\\Desktop\\test2\\请命名.zip')
-print('***运行时间统计代码***')
 
 time_14=datetime.now()
 timetotal2=datetime.now()
