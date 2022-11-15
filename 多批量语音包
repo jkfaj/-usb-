@@ -183,7 +183,6 @@ def process(request, token, audioFile) :
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import base64
-import pandas as pd
 import hashlib
 import hmac
 import requests
@@ -283,7 +282,7 @@ if enableVoiceDetection :
 
 data2=pd.DataFrame(data=None,columns=['编号','语音内容'])
 
-trans_wav="C:\\Users\\Administrator\\Desktop\\test\\转wav"
+trans_wav="C:\\Users\\Administrator\\Desktop\\test2\\转wav"
     # 测试时候在此处正确填写相关信息即可运行
 time1 = datetime.now()
 for i in os.listdir(trans_wav):
@@ -391,6 +390,10 @@ def zipDir(source_dir, output_filename):
     return
  
  
+zipDir(
+    r'C:\\Users\\Administrator\\Desktop\\test2\\chunks',
+    r'C:\\Users\\Administrator\\Desktop\\test2\\请命名.zip')
+print('***运行时间统计代码***')
 
 time_14=datetime.now()
 timetotal2=datetime.now()
