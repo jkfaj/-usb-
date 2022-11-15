@@ -390,10 +390,6 @@ def zipDir(source_dir, output_filename):
     return
  
  
-#zipDir(
-    r'C:\\Users\\Administrator\\Desktop\\test2\\chunks',
-    r'C:\\Users\\Administrator\\Desktop\\test2\\请命名.zip')
-print('***运行时间统计代码***')
 
 time_14=datetime.now()
 timetotal2=datetime.now()
