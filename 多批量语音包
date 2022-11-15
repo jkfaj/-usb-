@@ -124,16 +124,34 @@ time_8=datetime.now()
 
 #第五部分代码
 #功能：上传阿里云平台识别并返回识别结果
+
+Skip to content
+jkfaj /
+-
+Public
+
+    Code
+    Issues
+    Pull requests
+    Actions
+    Projects
+    Wiki
+    Security
+    Insights
+    Settings
+
+-/语音识别阿里云 代码
+@jkfaj
+jkfaj Update 语音识别阿里云 代码
+1 contributor
+179 lines (149 sloc) 5.86 KB
 # -*- coding: UTF-8 -*-
 # Python 2.x引入httplib模块
 # import httplib
 # Python 3.x引入http.client模块
-import pandas as pd
 import http.client
 from datetime import datetime
 import json
-
-time_9=datetime.now()
 
 def process(request, token, audioFile) :
 
@@ -156,20 +174,23 @@ def process(request, token, audioFile) :
 
     # Python 3.x使用http.client
     conn = http.client.HTTPConnection(host)
+
     conn.request(method='POST', url=request, body=audioContent, headers=httpHeaders)
+
     response = conn.getresponse()
-    # print('Response status and response reason:')
-    # print(response.status ,response.reason)
+    print('Response status and response reason:')
+    print(response.status ,response.reason)
+
     body = response.read()
     try:
-        # print('Recognize response is:')
+        print('Recognize response is:')
         body = json.loads(body)
-        # print(body)
+        print(body)
 
         status = body['status']
         if status == 20000000 :
             result = body['result']
-#           # print('Recognize result: ' + result)
+#            print('Recognize result: ' + result)
             return result
         else :
             print('Recognizer failed!')
@@ -212,22 +233,22 @@ class AccessToken:
                       'Version': '2019-02-28'}
         # 构造规范化的请求字符串
         query_string = AccessToken._encode_dict(parameters)
-        #print('规范化的请求字符串: %s' % query_string)
+        print('规范化的请求字符串: %s' % query_string)
         # 构造待签名字符串
         string_to_sign = 'GET' + '&' + AccessToken._encode_text('/') + '&' + AccessToken._encode_text(query_string)
-        #print('待签名的字符串: %s' % string_to_sign)
+        print('待签名的字符串: %s' % string_to_sign)
         # 计算签名
         secreted_string = hmac.new(bytes(access_key_secret + '&', encoding='utf-8'),
                                    bytes(string_to_sign, encoding='utf-8'),
                                    hashlib.sha1).digest()
         signature = base64.b64encode(secreted_string)
-        #print('签名: %s' % signature)
+        print('签名: %s' % signature)
         # 进行URL编码
         signature = AccessToken._encode_text(signature)
-        #print('URL编码后的签名: %s' % signature)
+        print('URL编码后的签名: %s' % signature)
         # 调用服务
         full_url = 'http://nls-meta.cn-shanghai.aliyuncs.com/?Signature=%s&%s' % (signature, query_string)
-        # print('url: %s' % full_url)
+        print('url: %s' % full_url)
         # 提交HTTP GET请求
         response = requests.get(full_url)
         if response.ok:
@@ -237,71 +258,73 @@ class AccessToken:
                 token = root_obj[key]['Id']
                 expire_time = root_obj[key]['ExpireTime']
                 return token, expire_time
-        #print(response.text)
+        print(response.text)
         return None, None
 if __name__ == "__main__":
     # 用户信息
     access_key_id = 'LTAI5tDCdQARDVh2XYMjJGLa'
     access_key_secret = 'znwuFhoqj6i9ojEwZWuPE4Hmp8anzs'
     token, expire_time = AccessToken.create_token(access_key_id, access_key_secret)
-   # print('token: %s, expire time(s): %s' % (token, expire_time))
+    print('token: %s, expire time(s): %s' % (token, expire_time))
     if expire_time:
-        # print('token有效期的北京时间：%s' % (time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(expire_time))))
+        print('token有效期的北京时间：%s' % (time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(expire_time))))
 
 
-    appKey = 'gF3HRZAKLeo6uD84'
+appKey = 'gF3HRZAKLeo6uD84'
 
 # 服务请求地址
-    url = 'https://nls-gateway-cn-shanghai.aliyuncs.com/stream/v1/asr'
+url = 'https://nls-gateway-cn-shanghai.aliyuncs.com/stream/v1/asr'
 
 # 音频文件
 # audioFile = '/path/to/nls-sample-16k.wav'
-    format = 'pcm'
-    sampleRate = 16000
-    enablePunctuationPrediction  = True
-    enableInverseTextNormalization = True
-    enableVoiceDetection  = False
+format = 'pcm'
+sampleRate = 16000
+enablePunctuationPrediction  = True
+enableInverseTextNormalization = True
+enableVoiceDetection  = False
 
 # 设置RESTful请求参数
-    request = url + '?appkey=' + appKey
-    request = request + '&format=' + format
-    request = request + '&sample_rate=' + str(sampleRate)
+request = url + '?appkey=' + appKey
+request = request + '&format=' + format
+request = request + '&sample_rate=' + str(sampleRate)
 
-    if enablePunctuationPrediction :
-        request = request + '&enable_punctuation_prediction=' + 'true'
+if enablePunctuationPrediction :
+    request = request + '&enable_punctuation_prediction=' + 'true'
 
-    if enableInverseTextNormalization :
-        request = request + '&enable_inverse_text_normalization=' + 'true'
+if enableInverseTextNormalization :
+    request = request + '&enable_inverse_text_normalization=' + 'true'
 
-    if enableVoiceDetection :
-        request = request + '&enable_voice_detection=' + 'true'
+if enableVoiceDetection :
+    request = request + '&enable_voice_detection=' + 'true'
 
 # print('Request: ' + request)
 
 
-    data2=pd.DataFrame(data=None,columns=['编号','语音内容'])
+data2=pd.DataFrame(data=None,columns=['编号','语音内容'])
 
-    trans_wav="C:\\Users\\Administrator\\Desktop\\test2\\转wav"
+trans_wav="C:\\Users\\Administrator\\Desktop\\test\\转wav"
     # 测试时候在此处正确填写相关信息即可运行
-    time1 = datetime.now()
-    for i in os.listdir(trans_wav):
-        num=os.path.splitext(i)[0]
-        xunfei_wav=trans_wav+'\\'+i
-        audioFile = xunfei_wav
-        result= process(request, token, audioFile)
-    # print(num,result)
-        dic ={'编号':num,'语音内容':result}
-        data1=pd.DataFrame(dic,index=[0])
-        data2=data2.append(data1,ignore_index=True)
+time1 = datetime.now()
+for i in os.listdir(trans_wav):
+    num=os.path.splitext(i)[0]
+    xunfei_wav=trans_wav+'\\'+i
+    audioFile = xunfei_wav
+    result= process(request, token, audioFile)
+    print(num,result)
+    dic ={'编号':num,'语音内容':result}
+    data1=pd.DataFrame(dic,index=[0])
+    data2=data2.append(data1,ignore_index=True)
     
-    time2 = datetime.now()
-# print(time2-time1)
-    now_time=datetime.now().strftime('%Y%m%d%H%M%S')
-    trans_txt=now_time+'.txt'
-    log_file="C:\\Users\\Administrator\\Desktop\\test2\\日志\\"+trans_txt
-    data2.to_csv(log_file,index=False,sep=' ')
-    print('***运行重命名代码***')
-    time_10=datetime.now()
+time2 = datetime.now()
+print(time2-time1)
+now_time=datetime.now().strftime('%Y%m%d%H%M%S')
+trans_txt=now_time+'.txt'
+log_file="C:\\Users\\Administrator\\Desktop\\test\\日志\\"+trans_txt
+data2.to_csv(log_file,index=False,sep=' ')
+
+
+
+
 
 
 
