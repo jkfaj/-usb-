@@ -249,59 +249,59 @@ if __name__ == "__main__":
         # print('token有效期的北京时间：%s' % (time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(expire_time))))
 
 
-appKey = 'gF3HRZAKLeo6uD84'
+    appKey = 'gF3HRZAKLeo6uD84'
 
 # 服务请求地址
-url = 'https://nls-gateway-cn-shanghai.aliyuncs.com/stream/v1/asr'
+    url = 'https://nls-gateway-cn-shanghai.aliyuncs.com/stream/v1/asr'
 
 # 音频文件
 # audioFile = '/path/to/nls-sample-16k.wav'
-format = 'pcm'
-sampleRate = 16000
-enablePunctuationPrediction  = True
-enableInverseTextNormalization = True
-enableVoiceDetection  = False
+    format = 'pcm'
+    sampleRate = 16000
+    enablePunctuationPrediction  = True
+    enableInverseTextNormalization = True
+    enableVoiceDetection  = False
 
 # 设置RESTful请求参数
-request = url + '?appkey=' + appKey
-request = request + '&format=' + format
-request = request + '&sample_rate=' + str(sampleRate)
+    request = url + '?appkey=' + appKey
+    request = request + '&format=' + format
+    request = request + '&sample_rate=' + str(sampleRate)
 
-if enablePunctuationPrediction :
-    request = request + '&enable_punctuation_prediction=' + 'true'
+    if enablePunctuationPrediction :
+        request = request + '&enable_punctuation_prediction=' + 'true'
 
-if enableInverseTextNormalization :
-    request = request + '&enable_inverse_text_normalization=' + 'true'
+    if enableInverseTextNormalization :
+        request = request + '&enable_inverse_text_normalization=' + 'true'
 
-if enableVoiceDetection :
-    request = request + '&enable_voice_detection=' + 'true'
+    if enableVoiceDetection :
+        request = request + '&enable_voice_detection=' + 'true'
 
 # print('Request: ' + request)
 
 
-data2=pd.DataFrame(data=None,columns=['编号','语音内容'])
+    data2=pd.DataFrame(data=None,columns=['编号','语音内容'])
 
-trans_wav="C:\\Users\\Administrator\\Desktop\\test2\\转wav"
+    trans_wav="C:\\Users\\Administrator\\Desktop\\test2\\转wav"
     # 测试时候在此处正确填写相关信息即可运行
-time1 = datetime.now()
-for i in os.listdir(trans_wav):
-    num=os.path.splitext(i)[0]
-    xunfei_wav=trans_wav+'\\'+i
-    audioFile = xunfei_wav
-    result= process(request, token, audioFile)
+    time1 = datetime.now()
+    for i in os.listdir(trans_wav):
+        num=os.path.splitext(i)[0]
+        xunfei_wav=trans_wav+'\\'+i
+        audioFile = xunfei_wav
+        result= process(request, token, audioFile)
     # print(num,result)
-    dic ={'编号':num,'语音内容':result}
-    data1=pd.DataFrame(dic,index=[0])
-    data2=data2.append(data1,ignore_index=True)
+        dic ={'编号':num,'语音内容':result}
+        data1=pd.DataFrame(dic,index=[0])
+        data2=data2.append(data1,ignore_index=True)
     
-time2 = datetime.now()
+    time2 = datetime.now()
 # print(time2-time1)
-now_time=datetime.now().strftime('%Y%m%d%H%M%S')
-trans_txt=now_time+'.txt'
-log_file="C:\\Users\\Administrator\\Desktop\\test2\\日志\\"+trans_txt
-data2.to_csv(log_file,index=False,sep=' ')
-print('***运行重命名代码***')
-time_10=datetime.now()
+    now_time=datetime.now().strftime('%Y%m%d%H%M%S')
+    trans_txt=now_time+'.txt'
+    log_file="C:\\Users\\Administrator\\Desktop\\test2\\日志\\"+trans_txt
+    data2.to_csv(log_file,index=False,sep=' ')
+    print('***运行重命名代码***')
+    time_10=datetime.now()
 
 
 
