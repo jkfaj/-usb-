@@ -125,26 +125,6 @@ time_8=datetime.now()
 #第五部分代码
 #功能：上传阿里云平台识别并返回识别结果
 
-Skip to content
-jkfaj /
--
-Public
-
-    Code
-    Issues
-    Pull requests
-    Actions
-    Projects
-    Wiki
-    Security
-    Insights
-    Settings
-
--/语音识别阿里云 代码
-@jkfaj
-jkfaj Update 语音识别阿里云 代码
-1 contributor
-179 lines (149 sloc) 5.86 KB
 # -*- coding: UTF-8 -*-
 # Python 2.x引入httplib模块
 # import httplib
@@ -410,7 +390,7 @@ def zipDir(source_dir, output_filename):
     return
  
  
-zipDir(
+#zipDir(
     r'C:\\Users\\Administrator\\Desktop\\test2\\chunks',
     r'C:\\Users\\Administrator\\Desktop\\test2\\请命名.zip')
 print('***运行时间统计代码***')
